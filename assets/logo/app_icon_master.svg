@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Seed: Aakaash teal-blue. The renderer will replace the fill when
+       generating adaptive (foreground) layers; for the legacy mipmap
+       bitmap we keep the full square background. -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0F4C5C"/>
+      <stop offset="100%" stop-color="#0A3744"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Rounded corner mask (shape only). One file = bitmap + adaptive
+       foreground source. The filled vRect is the background tile. -->
+  <rect x="0" y="0" width="512" height="512" rx="96" ry="96" fill="url(#bg)"/>
+
+  <!-- Minimalistic sun: solid disc + subtle ring -->
+  <circle cx="316" cy="180" r="56" fill="#FFFFFF" opacity="0.16"/>
+  <circle cx="316" cy="180" r="36" fill="#FFD66B"/>
+
+  <!-- Minimalistic cloud: three overlapping rounded rects, flat fill -->
+  <g fill="#FFFFFF">
+    <rect x="120" y="248" width="240" height="100" rx="50" ry="50"/>
+    <circle cx="180" cy="248" r="50"/>
+    <circle cx="296" cy="232" r="64"/>
+    <circle cx="332" cy="276" r="48"/>
+  </g>
+</svg>

@@ -1,0 +1,107 @@
+================================================================================
+                                 AAKAASH
+                   Beautiful Weather for Bangladesh
+                              USER MANUAL
+================================================================================
+
+Welcome to Aakaash! This manual will guide you through all the features of 
+Bangladesh's smartest weather and natural calamity app.
+
+--------------------------------------------------------------------------------
+1. GETTING STARTED
+--------------------------------------------------------------------------------
+* Setting Your Location:
+  When you open Aakaash, it defaults to Dhaka. Tap the "Search" icon (magnifying 
+  glass) at the top of the Home screen to search for your district or upazila. 
+  You can also use the GPS button to detect your current location.
+
+* App Theme:
+  Tap the "Theme" icon (sun/moon) to switch between Light Mode, Dark Mode, or 
+  System Default. The app also features adaptive gradients that change based on 
+  the current weather conditions.
+
+--------------------------------------------------------------------------------
+2. WEATHER FORECAST
+--------------------------------------------------------------------------------
+The Home screen is divided into 4 main segments:
+* Today: Shows the current temperature, feels like, weather condition, and a 
+  grid of key metrics (humidity, wind speed, UV index, pressure, visibility, 
+  dew point).
+* Hourly: A 24-hour strip showing temperature and rain probability every 3 hours.
+* 5 Days: A day-by-day breakdown for the next 5 days, including min/max 
+  temperatures and precipitation chances.
+* Details: Additional in-depth weather information.
+* AI Weather Insights: (Premium) Get natural-language weather summaries and 
+  smart, context-aware suggestions (like "Carry an umbrella") tailored just for you.
+* Home Screen Widget: Long-press your Android launcher to add the Aakaash widget, 
+  which keeps your selected city and real-time temperature right on your home screen.
+
+--------------------------------------------------------------------------------
+3. AI WEATHER INSIGHTS (Premium)
+--------------------------------------------------------------------------------
+Aakaash uses Google Gemini to read your local forecast and explain it to you 
+in natural, conversational language.
+* Context-Aware Summaries: Get a 2-3 sentence breakdown of temperature shifts, 
+  rain probability, and practical advice tailored for Bangladesh.
+* Smart Suggestions: The AI dynamically generates action chips (like "Carry an 
+  umbrella" or "Stay hydrated") based on extreme weather triggers.
+* Accessing: The AI Briefing card is automatically displayed at the top of the 
+  Home screen for premium subscribers.
+
+--------------------------------------------------------------------------------
+4. FARMER'S CORNER (কৃষকের কোণ)
+--------------------------------------------------------------------------------
+Aakaash provides smart agricultural advice tailored to Bangladesh's climate.
+* Accessing: Tap the "More" icon (⋮) at the top right of the Home screen and 
+  select "Farmer's Corner".
+* Farming Conditions Score: A 0-100 gauge showing overall agricultural 
+  suitability for today.
+* Advisories: You will find 7 color-coded expandable cards with advice on:
+  - Pesticide Spraying 
+  - Seed Sowing
+  - Irrigation
+  - Harvest Readiness
+  - Extreme Weather (Heatwaves, Cold waves, Nor'westers)
+  - Pest & Disease Risk
+  - Fertilizer Application
+* Seasonal Info: Shows the current Bengali season (e.g., Grisma, Barsha) and 
+  key farming activities for the season.
+
+--------------------------------------------------------------------------------
+5. NATURAL CALAMITIES & EARTHQUAKES
+--------------------------------------------------------------------------------
+Aakaash monitors Bangladesh for real-time disasters.
+* Accessing the Radar: Tap the "More" icon (⋮) and select "Natural Calamities".
+* The Radar Map: Displays active earthquakes, floods, cyclones, and fires on a 
+  map of Bangladesh.
+* Flood Fusion: Aakaash combines river discharge data with rainfall forecasts 
+  to provide district-level flood risks.
+* Earthquake Sentinel: Aakaash checks for earthquakes every 15 minutes. If a 
+  significant earthquake (Magnitude 3.5+) occurs in or near Bangladesh, you will 
+  receive an instant, loud push notification.
+
+--------------------------------------------------------------------------------
+6. NOTIFICATIONS
+--------------------------------------------------------------------------------
+Tap the "Bell" icon at the top of the Home screen to manage notifications.
+* Daily Weather: Get a morning summary of today's forecast. You can change the 
+  time (default is 7:00 AM).
+* Calamity Alerts: Background checks every 6 hours for floods/storms near you. 
+  You can adjust the alert radius (in km).
+* Earthquake Alerts: Instant alerts for regional earthquakes.
+
+--------------------------------------------------------------------------------
+7. SUBSCRIPTION (BDApps)
+--------------------------------------------------------------------------------
+Aakaash gives you 3 free location searches per day. To unlock unlimited 
+searches and active background notifications, you need to subscribe.
+* How to Subscribe: Tap the "Subscribe" button on the Home screen.
+* Payment: Enter your mobile number and verify the OTP. You will be charged 
+  BDT 2.00/day by your mobile operator (Robi, Cirkle).
+  No credit card is required.
+* Unsubscribing: Tap the "Subscribe" chip again on the Home screen to manage 
+  or cancel your subscription at any time.
+
+================================================================================
+Thank you for using Aakaash! Stay safe and weather-aware.
+================================================================================
