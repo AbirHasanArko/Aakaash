@@ -91,7 +91,18 @@ Tap the "Bell" icon at the top of the Home screen to manage notifications.
 * Earthquake Alerts: Instant alerts for regional earthquakes.
 
 --------------------------------------------------------------------------------
-7. SUBSCRIPTION (BDApps)
+7. HOME SCREEN WIDGET
+--------------------------------------------------------------------------------
+Aakaash includes a beautiful glassmorphism Android widget that lets you check 
+the weather right from your home screen.
+* Adding the Widget: Long-press any empty space on your Android home screen, 
+  select "Widgets", scroll down to "Aakaash", and drag the widget onto your screen.
+* Features: The widget displays your currently selected city, real-time 
+  temperature, and current weather conditions in an elegant, translucent card.
+* Updating: Tap the widget to open the Aakaash app and instantly refresh the data.
+
+--------------------------------------------------------------------------------
+8. SUBSCRIPTION (BDApps)
 --------------------------------------------------------------------------------
 Aakaash gives you 3 free location searches per day. To unlock unlimited 
 searches and active background notifications, you need to subscribe.

@@ -7,6 +7,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../core/app_constants.dart';
 import '../models/weather_models.dart';
@@ -20,6 +21,19 @@ class AiBriefing {
   final List<AiSuggestion> suggestions;
 
   const AiBriefing({required this.summary, required this.suggestions});
+
+  Map<String, dynamic> toJson() => {
+        'summary': summary,
+        'suggestions': suggestions.map((e) => e.toJson()).toList(),
+      };
+
+  factory AiBriefing.fromJson(Map<String, dynamic> json) => AiBriefing(
+        summary: json['summary'] as String? ?? '',
+        suggestions: (json['suggestions'] as List?)
+                ?.map((e) => AiSuggestion.fromJson(e as Map<String, dynamic>))
+                .toList() ??
+            const [],
+      );
 }
 
 class AiSuggestion {
@@ -29,6 +43,18 @@ class AiSuggestion {
   final String? route;
 
   const AiSuggestion({required this.emoji, required this.label, this.route});
+
+  Map<String, dynamic> toJson() => {
+        'emoji': emoji,
+        'label': label,
+        'route': route,
+      };
+
+  factory AiSuggestion.fromJson(Map<String, dynamic> json) => AiSuggestion(
+        emoji: json['emoji'] as String? ?? '',
+        label: json['label'] as String? ?? '',
+        route: json['route'] as String?,
+      );
 }
 
 class AiService {
@@ -67,12 +93,26 @@ class AiService {
     final model = _getModel();
     if (model == null) return null;
 
-    // Cache key: city + current hour (avoids re-calling within the same hour)
-    final cacheKey =
-        '$cityName|${DateTime.now().hour}';
+    // Cache key: city + current day + (hour ~/ 4)
+    // This splits the day into six 4-hour blocks, drastically reducing quota usage.
+    final now = DateTime.now();
+    final cacheKey = '$cityName|${now.day}|${now.hour ~/ 4}';
+
+    // 1. Check in-memory cache
     if (_cache.containsKey(cacheKey)) return _cache[cacheKey];
 
-    // Compact weather context (minimise tokens)
+    // 2. Check persistent cache
+    final prefs = await SharedPreferences.getInstance();
+    final storedJson = prefs.getString('ai_cache_$cacheKey');
+    if (storedJson != null) {
+      try {
+        final cachedBriefing = AiBriefing.fromJson(json.decode(storedJson));
+        _cache[cacheKey] = cachedBriefing;
+        return cachedBriefing;
+      } catch (_) {}
+    }
+
+    // 3. Generate new briefing
     final context = _buildContext(cityName, current, hourly);
 
     try {
@@ -85,7 +125,11 @@ class AiService {
       if (text == null || text.isEmpty) return null;
 
       final briefing = _parse(text);
-      if (briefing != null) _cache[cacheKey] = briefing;
+      if (briefing != null) {
+        _cache[cacheKey] = briefing;
+        // Persist and clean up old keys if necessary (simple implementation ignores cleanup for now)
+        prefs.setString('ai_cache_$cacheKey', json.encode(briefing.toJson()));
+      }
       return briefing;
     } catch (e) {
       if (kDebugMode) debugPrint('[AiService] Error: $e');

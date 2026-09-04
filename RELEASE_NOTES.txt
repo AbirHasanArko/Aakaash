@@ -44,8 +44,13 @@ AI capabilities and critical tools for our farming communities.
     6-tile highlights grid (humidity, wind, UV, pressure, visibility, dew point).
   - Glassmorphism UI: Stunning glass cards sitting on top of adaptive gradient 
     backgrounds that shift with the current weather code and time of day.
-  - Automated Background Sync: Configurable daily morning weather summaries and 
-    background calamity sweeps.
+* Smart Push Notifications
+  - Daily Morning Summaries: Get a personalized weather summary delivered to your 
+    phone exactly when you want it every morning.
+  - Earthquake Alerts: Instant, loud notifications the moment a local M3.5+ 
+    earthquake occurs in Bangladesh.
+  - Calamity Sweeps: Background monitoring that proactively alerts you to severe 
+    local floods or cyclones.
 
 --------------------------------------------------------------------------------
 2. IMPROVEMENTS & FIXES
@@ -56,10 +61,6 @@ AI capabilities and critical tools for our farming communities.
   (like "Dhaka"). The AI now always refers to the correct, user-friendly city name.
 * Forecast Optimization: Transitioned from a 10-day forecast to a highly accurate 
   5-day forecast strip, ensuring better data reliability.
-* Brand Unification: All user-facing subscription and UI references have been 
-  officially updated from "AppsPro" to "BDApps" for a cleaner, unified brand experience.
-* Updated Subscription Pricing: The premium subscription rate is now officially 
-  listed as BDT 2.00/day (applicable for Robi and Cirkle users).
 
 --------------------------------------------------------------------------------
 3. TECH STACK

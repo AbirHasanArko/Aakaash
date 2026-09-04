@@ -17,6 +17,17 @@
   upazila in between.</em>
 </p>
 
+<div align="center">
+  <h2>📥 Download the App</h2>
+  <a href="https://github.com/AbirHasanArko/Aakaash/releases/tag/v1.0.0">
+    <img src="https://img.shields.io/badge/GitHub-Download_v1.0.0-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub Release">
+  </a>
+  &nbsp;&nbsp;
+  <a href="https://appspro.dev/app/mndwrYr5dR">
+    <img src="https://img.shields.io/badge/AppsPro-Download_APK-E53935?style=for-the-badge&logo=android&logoColor=white" alt="AppsPro Download">
+  </a>
+</div>
+
 ---
 
 ## Table of Contents

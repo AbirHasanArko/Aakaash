@@ -53,7 +53,7 @@ class DetailsGrid extends StatelessWidget {
         MetricTile(
           icon: Icons.wb_sunny_rounded,
           label: 'UV Index',
-          value: '—',
+          value: current.uvIndex != null ? current.uvIndex!.toStringAsFixed(1) : '—',
           textColor: textColor,
         ),
       ],

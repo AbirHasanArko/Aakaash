@@ -21,6 +21,18 @@ class OpenWeatherService {
 
   final http.Client _client;
 
+  Future<double?> _getUvIndex(double lat, double lon) async {
+    try {
+      final uri = Uri.parse('https://api.open-meteo.com/v1/forecast?latitude=$lat&longitude=$lon&current=uv_index');
+      final res = await _client.get(uri).timeout(const Duration(seconds: 5));
+      if (res.statusCode == 200) {
+        final j = json.decode(res.body);
+        return (j['current']?['uv_index'] as num?)?.toDouble();
+      }
+    } catch (_) {}
+    return null;
+  }
+
   /// Current weather by lat/lon.
   Future<CurrentWeather> currentByLatLon(double lat, double lon) async {
     final uri = Uri.parse(
@@ -28,9 +40,9 @@ class OpenWeatherService {
       '?lat=$lat&lon=$lon'
       '&units=metric&lang=en&appid=${AppConstants.owmApiKey}',
     );
-    return _getJson(uri).then(
-      (j) => CurrentWeather.fromOwm(j),
-    );
+    final j = await _getJson(uri);
+    final uvi = await _getUvIndex(lat, lon);
+    return CurrentWeather.fromOwm(j, injectedUvi: uvi);
   }
 
   /// Current weather by city id (preferred for BD cities — OWM accuracy).
@@ -40,7 +52,16 @@ class OpenWeatherService {
       '?q=${Uri.encodeComponent(city)},BD'
       '&units=metric&lang=en&appid=${AppConstants.owmApiKey}',
     );
-    return _getJson(uri).then((j) => CurrentWeather.fromOwm(j));
+    final j = await _getJson(uri);
+    double? uvi;
+    if (j['coord'] != null) {
+      final lat = (j['coord']['lat'] as num?)?.toDouble();
+      final lon = (j['coord']['lon'] as num?)?.toDouble();
+      if (lat != null && lon != null) {
+        uvi = await _getUvIndex(lat, lon);
+      }
+    }
+    return CurrentWeather.fromOwm(j, injectedUvi: uvi);
   }
 
   /// 5-day daily forecast (free tier via One Call 3.0).

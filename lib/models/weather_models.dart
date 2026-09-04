@@ -58,6 +58,7 @@ class CurrentWeather {
   final int timezoneOffsetSeconds; // shift from UTC
   final double? rainLastHour; // mm
   final double? snowLastHour; // mm
+  final double? uvIndex;
 
   const CurrentWeather({
     required this.cityName,
@@ -76,6 +77,7 @@ class CurrentWeather {
     required this.timezoneOffsetSeconds,
     this.rainLastHour,
     this.snowLastHour,
+    this.uvIndex,
   });
 
   bool get isDaytime {
@@ -85,7 +87,7 @@ class CurrentWeather {
     return now >= sr && now <= ss;
   }
 
-  factory CurrentWeather.fromOwm(Map<String, dynamic> j) {
+  factory CurrentWeather.fromOwm(Map<String, dynamic> j, {double? injectedUvi}) {
     final weatherList = (j['weather'] as List?) ?? const [];
     final w0 = weatherList.isNotEmpty
         ? weatherList.first as Map<String, dynamic>
@@ -121,6 +123,7 @@ class CurrentWeather {
       timezoneOffsetSeconds: ((j['timezone'] ?? 0) as num).toInt(),
       rainLastHour: (rain != null) ? (rain['1h'] as num?)?.toDouble() : null,
       snowLastHour: (snow != null) ? (snow['1h'] as num?)?.toDouble() : null,
+      uvIndex: injectedUvi ?? (j['uvi'] as num?)?.toDouble(),
     );
   }
 }

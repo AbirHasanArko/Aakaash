@@ -837,8 +837,13 @@ class _DailyTab extends StatelessWidget {
 
   String _wettestText(List<DailyForecast> ds) {
     if (ds.isEmpty) return '—';
-    final w = ds.reduce((a, b) => a.rain > b.rain ? a : b);
-    if (w.rain == 0) return 'No rain in the next 5 days';
+    final w = ds.reduce((a, b) {
+      if (a.rain > b.rain) return a;
+      if (b.rain > a.rain) return b;
+      return a.pop > b.pop ? a : b;
+    });
+    if (w.rain == 0 && w.pop == 0) return 'No rain in the next 5 days';
+    if (w.rain == 0 && w.pop > 0) return '${(w.pop * 100).round()}% chance on ${DateFmt.dateOnly(w.date)}';
     return '${w.rain.toStringAsFixed(1)} mm on ${DateFmt.dateOnly(w.date)}';
   }
 }
