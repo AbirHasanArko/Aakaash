@@ -74,7 +74,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Unlimited Bangladesh forecasts',
+                          'Premium Features',
                           style: tt.titleMedium?.copyWith(
                             color: scheme.onPrimaryContainer,
                             fontWeight: FontWeight.w800,
@@ -82,7 +82,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          'No daily cap • All 70+ cities • 5-day forecast • Premium AI insights',
+                          'No daily cap • All 70+ cities • Real-time Notifications • Premium AI insights',
                           style: tt.bodySmall?.copyWith(
                             color: scheme.onPrimaryContainer,
                           ),
