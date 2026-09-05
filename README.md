@@ -95,8 +95,8 @@ Bangladesh-native.**
 </p>
 <p align="center">
   <img src="screenshots/10-%20homescreen%20widget.png" width="31%" />
-  <img src="screenshots/10-%20subscription%20gated%20AI%20insights.png" width="31%" />
-  <img src="screenshots/11-%20subscription%20gated%20notifications.png" width="31%" />
+  <img src="screenshots/11-%20subscription%20gated%20AI%20insights.png" width="31%" />
+  <img src="screenshots/12-%20subscription%20gated%20notifications.png" width="31%" />
 </p>
 <br/>
 <p align="center">
