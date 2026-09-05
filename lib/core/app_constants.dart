@@ -77,5 +77,5 @@ class AppConstants {
     // Fallback so it works in debug/IDE without explicit --dart-define
     return 'DUMMY_GEMINI_API_KEY_1234567890';
   }
-  static const String geminiModel = 'gemini-3.6-flash';
+  static const String geminiModel = 'gemini-3.5-flash-lite';
 }

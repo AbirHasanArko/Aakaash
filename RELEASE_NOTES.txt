@@ -22,7 +22,7 @@ AI capabilities and critical tools for our farming communities.
 
 * AI Weather Insights (Premium)
   - Gemini-Powered Briefings: Instead of just raw numbers, Aakaash now uses 
-    Google Gemini 3.6 Flash to read your local forecast and explain it in 
+    Google Gemini 3.5 Flash-Lite to read your local forecast and explain it in 
     natural, conversational language.
   - Smart Suggestions: The app now dynamically generates context-aware action 
     chips. If it's going to rain, it'll tell you to carry an umbrella. If a 

@@ -283,7 +283,7 @@ class _DataAttributionCard extends StatelessWidget {
             ),
             const _AttributionRow(
               title: 'AI Weather Insights',
-              source: 'Google Gemini 3.6 Flash',
+              source: 'Google Gemini 3.5 Flash-Lite',
               url: 'https://ai.google.dev',
             ),
             const _AttributionRow(

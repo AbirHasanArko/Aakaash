@@ -11,7 +11,7 @@ We've been hard at work making Aakaash not just a weather app, but a smart compa
     *   **Flood Fusion:** District-level flood risk alerts combining rainfall forecasts with river discharge data.
     *   **Multi-Hazard Map:** Live tracking of cyclones (GDACS) and active fires (NASA FIRMS) across Bangladesh.
 *   **AI Weather Insights (Premium)**
-    *   **Gemini-Powered Briefings:** Instead of just raw numbers, Aakaash now uses Google Gemini 3.6 Flash to read your local forecast and explain it in natural, conversational language.
+    *   **Gemini-Powered Briefings:** Instead of just raw numbers, Aakaash now uses Google Gemini 3.5 Flash-Lite to read your local forecast and explain it in natural, conversational language.
     *   **Smart Suggestions:** The app now dynamically generates context-aware action chips. If it's going to rain, it'll tell you to carry an umbrella. If a heatwave is coming, it'll remind you to stay hydrated.
 *   **Farmer's Corner (কৃষকের কোণ)**
     *   **Agricultural Suitability Gauge:** A dedicated dashboard scoring today's weather (0-100) for general farming tasks.

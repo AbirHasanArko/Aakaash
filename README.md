@@ -76,6 +76,32 @@ Bangladesh-native.**
 
 ---
 
+## Screenshots & UX
+
+<p align="center">
+  <img src="screenshots/1-%20weather%20today%20with%20AI%20insight.png" width="31%" />
+  <img src="screenshots/2-%20weather%20today%20with%203-hourly%20prediction%20and%206%20tiles%20highlights.png" width="31%" />
+  <img src="screenshots/3-%205%20day%20weather%20forecast.png" width="31%" />
+</p>
+<p align="center">
+  <img src="screenshots/4-%20city%20search.png" width="31%" />
+  <img src="screenshots/5-%20natural%20calamity%20radar.png" width="31%" />
+  <img src="screenshots/6-%20natural%20calamity%20radar%20(2).png" width="31%" />
+</p>
+<p align="center">
+  <img src="screenshots/7-%20farmer's%20corner.png" width="31%" />
+  <img src="screenshots/8-%20notification%20control.png" width="31%" />
+  <img src="screenshots/9-%20subscription%20screen.png" width="31%" />
+</p>
+<br/>
+<p align="center">
+  <a href="https://appspro.dev/app/mndwrYr5dR">
+    <img src="screenshots/appspro%20landing%20page%20for%20aakaash.png" width="70%" alt="AppsPro Landing Page" />
+  </a>
+</p>
+
+---
+
 ## Feature Highlights
 
 ### The Intelligent Natural Calamity Radar  Curated for Bangladesh
@@ -163,7 +189,7 @@ screen.
 
 ### AI Weather Insights (Premium)
 
-Instead of just showing raw data, Aakaash uses **Google Gemini 3.6 Flash** to read the forecast and explain it to you in natural, conversational language.
+Instead of just showing raw data, Aakaash uses **Google Gemini 3.5 Flash-Lite** to read the forecast and explain it to you in natural, conversational language.
 
 #### Context-aware Briefings
 The app sends the current temperature, conditions, and the next 6 hours of forecasts to Gemini, which generates a **2-3 sentence human-readable summary**. It highlights temperature shifts, rain probability, and practical advice tailored for Bangladesh.
