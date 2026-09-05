@@ -1,9 +1,10 @@
 // lib/services/ai_service.dart
 //
 // Lightweight wrapper around Google Gemini Flash for generating
-// weather briefings and activity suggestions.
+// weather briefings, activity suggestions, and crop disease analysis.
 
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
@@ -57,9 +58,63 @@ class AiSuggestion {
       );
 }
 
+/// Result of a crop disease image analysis.
+class CropDiseaseResult {
+  final String diseaseName;
+  final String confidence;
+  final String description;
+  final String treatment;
+
+  const CropDiseaseResult({
+    required this.diseaseName,
+    required this.confidence,
+    required this.description,
+    required this.treatment,
+  });
+
+  factory CropDiseaseResult.fromJson(Map<String, dynamic> json) =>
+      CropDiseaseResult(
+        diseaseName: json['disease_name'] as String? ?? 'Unknown',
+        confidence: json['confidence'] as String? ?? 'low',
+        description: json['description'] as String? ?? '',
+        treatment: json['treatment'] as String? ?? '',
+      );
+}
+
+/// Result of a sky image analysis.
+class SkyAnalysisResult {
+  final String skyCondition;
+  final String goingOut;
+  final String dress;
+  final List<String> utilities;
+  final String food;
+  final String mood;
+
+  const SkyAnalysisResult({
+    required this.skyCondition,
+    required this.goingOut,
+    required this.dress,
+    required this.utilities,
+    required this.food,
+    required this.mood,
+  });
+
+  factory SkyAnalysisResult.fromJson(Map<String, dynamic> json) {
+    return SkyAnalysisResult(
+      skyCondition: json['sky_condition'] as String? ?? 'Unknown',
+      goingOut: json['going_out'] as String? ?? '',
+      dress: json['dress'] as String? ?? '',
+      utilities: (json['utilities'] as List?)?.map((e) => e.toString()).toList() ?? const [],
+      food: json['food'] as String? ?? '',
+      mood: json['mood'] as String? ?? '🌤️',
+    );
+  }
+}
+
 class AiService {
   AiService._();
   static final AiService instance = AiService._();
+
 
   GenerativeModel? _model;
   // Cache: "CityName|hour" → AiBriefing
@@ -139,6 +194,140 @@ class AiService {
 
   /// Clear the in-memory cache (e.g. when the city changes).
   void clearCache() => _cache.clear();
+
+  /// Analyse a crop image for disease detection using Gemini vision.
+  /// Returns null on any error (no key, offline, quota, timeout).
+  Future<CropDiseaseResult?> analyzeCropDisease(
+    Uint8List imageBytes,
+    String mimeType,
+  ) async {
+    final model = _getModel();
+    if (model == null) return null;
+
+    try {
+      final content = Content.multi([
+        TextPart(_cropDiseasePrompt),
+        DataPart(mimeType, imageBytes),
+      ]);
+
+      final response = await model.generateContent([content])
+          .timeout(const Duration(seconds: 60));
+
+      final text = response.text?.trim();
+      if (text == null || text.isEmpty) return null;
+
+      return _parseCropResult(text);
+    } catch (e) {
+      if (kDebugMode) debugPrint('[AiService] Crop disease error: $e');
+      return null;
+    }
+  }
+
+  static const _cropDiseasePrompt = '''
+You are an expert agricultural pathologist specialising in crops commonly grown in Bangladesh.
+Analyse the provided image of a plant/crop and identify any visible disease or pest damage.
+
+Respond with JSON only:
+
+{
+  "disease_name": "Name of the disease or 'Healthy' if no disease detected",
+  "confidence": "high" | "medium" | "low",
+  "description": "Brief 2-3 sentence description of the disease, its cause, and visible symptoms.",
+  "treatment": "2-3 practical treatment suggestions appropriate for smallholder farmers in Bangladesh. Include both organic and chemical options if applicable."
+}
+
+Rules:
+- If the image is not a plant/crop, set disease_name to "Not a plant image" and explain in description.
+- If the plant looks healthy, set disease_name to "Healthy" with a positive description.
+- Keep description under 200 characters.
+- Keep treatment under 250 characters.
+- Use plain text, no markdown.
+- Output valid JSON only, nothing else.
+''';
+
+  CropDiseaseResult? _parseCropResult(String text) {
+    try {
+      var clean = text;
+      if (clean.startsWith('```')) {
+        clean = clean.replaceFirst(RegExp(r'^```\w*\n?'), '');
+        clean = clean.replaceFirst(RegExp(r'\n?```$'), '');
+      }
+      final j = json.decode(clean.trim()) as Map<String, dynamic>;
+      final name = j['disease_name'] as String? ?? '';
+      if (name.isEmpty) return null;
+      return CropDiseaseResult.fromJson(j);
+    } catch (e) {
+      if (kDebugMode) debugPrint('[AiService] Crop parse error: $e');
+      return null;
+    }
+  }
+
+  /// Analyse a sky photo for lifestyle suggestions using Gemini vision.
+  /// Returns null on any error.
+  Future<SkyAnalysisResult?> analyzeSky(
+    Uint8List imageBytes,
+    String mimeType,
+  ) async {
+    final model = _getModel();
+    if (model == null) return null;
+
+    try {
+      final content = Content.multi([
+        TextPart(_skyAnalysisPrompt),
+        DataPart(mimeType, imageBytes),
+      ]);
+
+      final response = await model.generateContent([content])
+          .timeout(const Duration(seconds: 60));
+
+      final text = response.text?.trim();
+      if (text == null || text.isEmpty) return null;
+
+      return _parseSkyResult(text);
+    } catch (e) {
+      if (kDebugMode) debugPrint('[AiService] Sky analysis error: $e');
+      return null;
+    }
+  }
+
+  static const _skyAnalysisPrompt = '''
+You are a friendly, witty lifestyle and weather assistant for the "Aakaash" app in Bangladesh.
+Analyse the provided photo of the sky and provide lifestyle suggestions based on the visible weather conditions.
+
+Respond with JSON only:
+
+{
+  "sky_condition": "Brief description of the sky (e.g. 'Heavy rain clouds gathering', 'Clear sunny sky')",
+  "going_out": "Friendly advice on whether it's a good time to go outside.",
+  "dress": "Suggestion on what to wear given the sky.",
+  "utilities": ["List of 2-3 items to carry (e.g., '☂️ Umbrella', '🧴 Sunscreen', '🕶️ Sunglasses')"],
+  "food": "A culturally relevant (Bangladeshi) food or drink suggestion that perfectly matches the weather mood.",
+  "mood": "A single emoji that captures the vibe of the sky."
+}
+
+Rules:
+- If the image is clearly not a sky or outdoor photo, set sky_condition to "Doesn't look like a sky" and make a joke about it in the going_out field.
+- Keep the tone conversational and culturally relevant to Bangladesh.
+- Use plain text, no markdown.
+- Output valid JSON only, nothing else.
+''';
+
+  SkyAnalysisResult? _parseSkyResult(String text) {
+    try {
+      var clean = text;
+      if (clean.startsWith('```')) {
+        clean = clean.replaceFirst(RegExp(r'^```\w*\n?'), '');
+        clean = clean.replaceFirst(RegExp(r'\n?```$'), '');
+      }
+      final j = json.decode(clean.trim()) as Map<String, dynamic>;
+      final condition = j['sky_condition'] as String? ?? '';
+      if (condition.isEmpty) return null;
+      return SkyAnalysisResult.fromJson(j);
+    } catch (e) {
+      if (kDebugMode) debugPrint('[AiService] Sky parse error: $e');
+      return null;
+    }
+  }
 
   // ────────────────────── prompt ──────────────────────
 

@@ -21,6 +21,7 @@ import 'calamity_screen.dart';
 import 'farmers_corner_screen.dart';
 import 'notification_settings_screen.dart';
 import 'search_screen.dart';
+import 'sky_analyzer_screen.dart';
 import 'subscription_screen.dart';
 
 /// Main screen with a SegmentBar (Today / Hourly / 5-Day / Details).
@@ -76,6 +77,9 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               onFarmersCorner: () => Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => const FarmersCornerScreen()),
+              ),
+              onSkyAnalyzer: () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const SkyAnalyzerScreen()),
               ),
               onAbout: () => Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => const AboutScreen()),
@@ -226,6 +230,7 @@ class _Header extends StatelessWidget {
   final VoidCallback onSubscribe;
   final VoidCallback onCalamities;
   final VoidCallback onFarmersCorner;
+  final VoidCallback onSkyAnalyzer;
   final VoidCallback onAbout;
   final VoidCallback onNotifications;
   final VoidCallback onManageSubscription;
@@ -235,6 +240,7 @@ class _Header extends StatelessWidget {
     required this.onSubscribe,
     required this.onCalamities,
     required this.onFarmersCorner,
+    required this.onSkyAnalyzer,
     required this.onAbout,
     required this.onNotifications,
     required this.onManageSubscription,
@@ -353,6 +359,9 @@ class _Header extends StatelessWidget {
                 case 'farmers':
                   onFarmersCorner();
                   break;
+                case 'sky_analyzer':
+                  onSkyAnalyzer();
+                  break;
                 case 'about':
                   onAbout();
                   break;
@@ -378,6 +387,17 @@ class _Header extends StatelessWidget {
                         color: scheme.primary, size: 20),
                     const SizedBox(width: 12),
                     const Text("Farmer's Corner"),
+                  ],
+                ),
+              ),
+              PopupMenuItem(
+                value: 'sky_analyzer',
+                child: Row(
+                  children: [
+                    Icon(Icons.camera_enhance_rounded,
+                        color: scheme.primary, size: 20),
+                    const SizedBox(width: 12),
+                    const Text("Sky Analyzer"),
                   ],
                 ),
               ),
