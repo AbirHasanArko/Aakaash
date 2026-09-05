@@ -91,7 +91,7 @@ Bangladesh-native.**
 <p align="center">
   <img src="screenshots/7-%20farmer's%20corner.png" width="31%" />
   <img src="screenshots/8-%20notification%20control.png" width="31%" />
-  <img src="screenshots/9-%20subscription%20screen.png" width="31%" />
+  <img src="screenshots/9-%20subscription%20screen%20updated.png" width="31%" />
 </p>
 <p align="center">
   <img src="screenshots/10-%20homescreen%20widget.png" width="31%" />
