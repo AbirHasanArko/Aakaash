@@ -2,8 +2,12 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/subscription_provider.dart';
 import '../services/ai_service.dart';
 import '../widgets/glass_card.dart';
+import 'subscription_screen.dart';
 
 class SkyAnalyzerScreen extends StatefulWidget {
   const SkyAnalyzerScreen({super.key});
@@ -74,6 +78,8 @@ class _SkyAnalyzerScreenState extends State<SkyAnalyzerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final sub = context.watch<SubscriptionProvider>();
+    final isSubscribed = sub.status == SubscriptionStatus.registered;
     final scheme = Theme.of(context).colorScheme;
     final tt = Theme.of(context).textTheme;
 
@@ -108,62 +114,116 @@ class _SkyAnalyzerScreenState extends State<SkyAnalyzerScreen> {
           ),
           const SizedBox(height: 24),
 
-          // Image Preview / Placeholder
-          GestureDetector(
-            onTap: (_selectedImageBytes == null && !_isAnalysing)
-                ? () => _pickImage(ImageSource.camera)
-                : null,
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              height: _selectedImageBytes == null ? 220 : 300,
-              width: double.infinity,
+          // Subscription Gate
+          if (!isSubscribed)
+            Container(
+              padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: scheme.surfaceContainerHighest,
+                color: scheme.surfaceContainerHighest.withAlpha(150),
                 borderRadius: BorderRadius.circular(24),
                 border: Border.all(
                   color: scheme.outlineVariant.withAlpha(80),
                   width: 2,
                 ),
-                image: _selectedImageBytes != null
-                    ? DecorationImage(
-                        image: MemoryImage(_selectedImageBytes!),
-                        fit: BoxFit.cover,
+              ),
+              child: Column(
+                children: [
+                  Icon(Icons.lock_outline_rounded,
+                      size: 48, color: scheme.primary),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Unlock Sky Analyzer',
+                    style: tt.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Subscribe to BDApps to unlock our premium AI vision features and get instant weather and lifestyle insights from the sky.',
+                    style: tt.bodyMedium?.copyWith(
+                      color: scheme.onSurfaceVariant,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    width: double.infinity,
+                    child: FilledButton.icon(
+                      onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (_) => const SubscriptionScreen()),
+                      ),
+                      icon: const Icon(Icons.workspace_premium_rounded),
+                      label: const Text('Upgrade to Premium'),
+                      style: FilledButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          else ...[
+            // Image Preview / Placeholder
+            GestureDetector(
+              onTap: (_selectedImageBytes == null && !_isAnalysing)
+                  ? () => _pickImage(ImageSource.camera)
+                  : null,
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                height: _selectedImageBytes == null ? 220 : 300,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: scheme.surfaceContainerHighest,
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(
+                    color: scheme.outlineVariant.withAlpha(80),
+                    width: 2,
+                  ),
+                  image: _selectedImageBytes != null
+                      ? DecorationImage(
+                          image: MemoryImage(_selectedImageBytes!),
+                          fit: BoxFit.cover,
+                        )
+                      : null,
+                ),
+                child: _selectedImageBytes == null
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.camera_alt_rounded,
+                            size: 48,
+                            color: scheme.primary.withAlpha(150),
+                          ),
+                          const SizedBox(height: 12),
+                          Text(
+                            'Tap to open camera',
+                            style: tt.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: scheme.primary,
+                            ),
+                          ),
+                        ],
                       )
                     : null,
               ),
-              child: _selectedImageBytes == null
-                  ? Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.camera_alt_rounded,
-                          size: 48,
-                          color: scheme.primary.withAlpha(150),
-                        ),
-                        const SizedBox(height: 12),
-                        Text(
-                          'Tap to open camera',
-                          style: tt.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: scheme.primary,
-                          ),
-                        ),
-                      ],
-                    )
-                  : null,
             ),
-          ),
 
-          // Gallery Option
-          if (_selectedImageBytes == null && !_isAnalysing) ...[
-            const SizedBox(height: 16),
-            Center(
-              child: TextButton.icon(
-                onPressed: () => _pickImage(ImageSource.gallery),
-                icon: const Icon(Icons.photo_library_rounded, size: 20),
-                label: const Text('Or choose from gallery'),
+            // Gallery Option
+            if (_selectedImageBytes == null && !_isAnalysing) ...[
+              const SizedBox(height: 16),
+              Center(
+                child: TextButton.icon(
+                  onPressed: () => _pickImage(ImageSource.gallery),
+                  icon: const Icon(Icons.photo_library_rounded, size: 20),
+                  label: const Text('Or choose from gallery'),
+                ),
               ),
-            ),
+            ],
           ],
 
           const SizedBox(height: 24),

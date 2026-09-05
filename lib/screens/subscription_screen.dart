@@ -82,7 +82,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          'No daily cap • All 70+ cities • Real-time Notifications • Premium AI insights',
+                          'No daily cap • All 70+ cities • Sky Analyzer • Crop Disease Scanner • Real-time Alerts • Premium AI insights',
                           style: tt.bodySmall?.copyWith(
                             color: scheme.onPrimaryContainer,
                           ),
