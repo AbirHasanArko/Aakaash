@@ -130,6 +130,25 @@ class SubscriptionProvider extends ChangeNotifier {
     lastError = null;
     notifyListeners();
     try {
+      // FIX: Check if the user is already subscribed before sending an OTP.
+      // This is crucial for users who subscribed via the landing page, because
+      // BDApps will refuse to send an OTP (E1984) to a number that is already
+      // registered. This check acts as a "restore purchase" mechanism.
+      final s = await _service.checkStatus(phoneE164OrLocal);
+      if (s.isSubscribed) {
+        phone = _normalizeLocal(phoneE164OrLocal);
+        subscriberId = s.subscriberId;
+        status = SubscriptionStatus.registered;
+        freeSearchesUsedToday = 0;
+        final p = await SharedPreferences.getInstance();
+        await p.setString(_kPhoneKey, phone!);
+        await p.setInt(_kCountKey, 0);
+        await p.setString(_kSubscriberIdKey, subscriberId ?? '');
+        notifyListeners();
+        await _syncNotif();
+        return true; 
+      }
+
       final r = await _service.requestOtp(phoneE164OrLocal);
       if (r.success && r.referenceNo != null) {
         lastOtpReference = r.referenceNo;

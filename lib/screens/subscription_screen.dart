@@ -300,11 +300,18 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
       _busy = false;
       _otpRequested = _otpRequested || ok;
     });
-    final msg = ok
-        ? 'OTP sent — please check your SMS'
-        : (sub.lastError?.isNotEmpty == true
-            ? 'Could not send OTP — ${sub.lastError}'
-            : 'Could not send OTP. Try again.');
+    
+    String msg;
+    if (sub.status == SubscriptionStatus.registered) {
+      msg = 'Subscription restored! Welcome back.';
+    } else {
+      msg = ok
+          ? 'OTP sent — please check your SMS'
+          : (sub.lastError?.isNotEmpty == true
+              ? 'Could not send OTP — ${sub.lastError}'
+              : 'Could not send OTP. Try again.');
+    }
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(msg),
