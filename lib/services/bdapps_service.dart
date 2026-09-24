@@ -101,8 +101,8 @@ class BdappsService {
       );
       return BdappsStatus(
         isSubscribed:
-            (r['subscription_status']?.toString().toUpperCase() ?? '') ==
-                'REGISTERED',
+            ['REGISTERED', 'PENDING'].contains(
+                r['subscription_status']?.toString().toUpperCase() ?? ''),
         subscriptionStatus: r['subscription_status']?.toString() ?? '',
         statusCode: r['status_code']?.toString() ?? '',
         statusDetail: r['status_detail']?.toString() ?? '',
@@ -121,6 +121,35 @@ class BdappsService {
       statusDetail: r['statusDetail']?.toString() ?? '',
       subscriberId: r['subscriberId']?.toString() ?? 'tel:88$digits',
     );
+  }
+
+  /// Verifies subscription directly against AppsPro's local mirror using the subscriber ID.
+  /// This avoids the buggy BDApps live status endpoint which often returns E1951
+  /// for numbers that are actually registered.
+  Future<BdappsStatus> verifySubscriber(String phoneE164OrLocal) async {
+    final digits = _normalize(phoneE164OrLocal);
+    if (backend == 'appspro') {
+      _requireSecretKey();
+      
+      final res = await _client.get(
+        Uri.parse('https://api.appspro.dev/api/v1/sdk/verify/tel:88$digits'),
+        headers: _bearerHeaders(),
+      ).timeout(const Duration(seconds: 20));
+      
+      if (res.statusCode == 200) {
+        final data = json.decode(res.body);
+        final isValid = data['valid'] == true;
+        return BdappsStatus(
+          isSubscribed: isValid,
+          subscriptionStatus: isValid ? 'REGISTERED' : 'UNREGISTERED',
+          statusCode: isValid ? 'S1000' : 'E0000',
+          statusDetail: data['reason']?.toString() ?? '',
+          subscriberId: 'tel:88$digits',
+        );
+      }
+    }
+    // Fallback to checkStatus if not using AppsPro or if request failed
+    return checkStatus(phoneE164OrLocal);
   }
 
   /// Step 1 of subscription: ask BDApps to SMS the user an OTP.

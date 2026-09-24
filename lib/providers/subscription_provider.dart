@@ -134,19 +134,24 @@ class SubscriptionProvider extends ChangeNotifier {
       // This is crucial for users who subscribed via the landing page, because
       // BDApps will refuse to send an OTP (E1984) to a number that is already
       // registered. This check acts as a "restore purchase" mechanism.
-      final s = await _service.checkStatus(phoneE164OrLocal);
-      if (s.isSubscribed) {
-        phone = _normalizeLocal(phoneE164OrLocal);
-        subscriberId = s.subscriberId;
-        status = SubscriptionStatus.registered;
-        freeSearchesUsedToday = 0;
-        final p = await SharedPreferences.getInstance();
-        await p.setString(_kPhoneKey, phone!);
-        await p.setInt(_kCountKey, 0);
-        await p.setString(_kSubscriberIdKey, subscriberId ?? '');
-        notifyListeners();
-        await _syncNotif();
-        return true; 
+      try {
+        final s = await _service.verifySubscriber(phoneE164OrLocal);
+        if (s.isSubscribed) {
+          phone = _normalizeLocal(phoneE164OrLocal);
+          subscriberId = s.subscriberId;
+          status = SubscriptionStatus.registered;
+          freeSearchesUsedToday = 0;
+          final p = await SharedPreferences.getInstance();
+          await p.setString(_kPhoneKey, phone!);
+          await p.setInt(_kCountKey, 0);
+          await p.setString(_kSubscriberIdKey, subscriberId ?? '');
+          notifyListeners();
+          await _syncNotif();
+          return true; 
+        }
+      } catch (_) {
+        // If the pre-flight status check fails (e.g. network timeout or API error),
+        // safely ignore it and fall back to actually requesting an OTP.
       }
 
       final r = await _service.requestOtp(phoneE164OrLocal);
