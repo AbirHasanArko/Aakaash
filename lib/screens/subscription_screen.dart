@@ -280,7 +280,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             const SizedBox(height: 16),
             Text(
               'Subscription is billed daily to your mobile account at '
-              'BDT 2.00/day through your operator. Standard operator '
+              '৳2.78 (vat+sd+sc)/day through your operator. Standard operator '
               'charges apply. You can cancel anytime from this screen — '
               'no USSD code or SMS reply required.',
               style: tt.bodySmall?.copyWith(color: scheme.outline),
